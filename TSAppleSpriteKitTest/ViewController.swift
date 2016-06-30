@@ -33,6 +33,7 @@ class ViewController: UIViewController {
 
 class HelloScene: SKScene {
     var contentCreated : Bool = false
+    let helloWordLabelName = "helloWordLabel"
     
     override func didMoveToView(view: SKView) {
         if contentCreated == false {
@@ -51,12 +52,25 @@ class HelloScene: SKScene {
     func newHelloNode() -> SKLabelNode {
         let hellowNode = SKLabelNode(fontNamed: "Chalkduster")
         hellowNode.text = "Hellow Word"
-        hellowNode.name = "helloWordLabel"
+        hellowNode.name = helloWordLabelName
         hellowNode.fontSize = 42
         hellowNode.fontColor = UIColor.greenColor()
         hellowNode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         
         return hellowNode
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let helloWordNode = self.childNodeWithName(helloWordLabelName) {
+            helloWordNode.name = nil
+            let moveUp = SKAction.moveByX(0, y: 100, duration: 0.5);
+            let zoom = SKAction.scaleTo(2, duration: 0.25)
+            let pusee = SKAction.waitForDuration(0.5)
+            let fadeAway = SKAction.fadeOutWithDuration(0.25)
+            let remove = SKAction.removeFromParent()
+            let moveSequence = SKAction.sequence([moveUp, zoom, pusee, fadeAway, remove])
+            helloWordNode.runAction(moveSequence)
+        }
     }
 }
 
