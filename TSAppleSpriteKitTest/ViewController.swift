@@ -69,9 +69,31 @@ class HelloScene: SKScene {
             let fadeAway = SKAction.fadeOutWithDuration(0.25)
             let remove = SKAction.removeFromParent()
             let moveSequence = SKAction.sequence([moveUp, zoom, pusee, fadeAway, remove])
-            helloWordNode.runAction(moveSequence)
+            helloWordNode.runAction(moveSequence, completion: {
+                let spaceshipSecene = SpaceshipScene(size: (self.view?.frame.size)!)
+                let doorTransaction = SKTransition.doorsOpenVerticalWithDuration(0.5);
+                self.view?.presentScene(spaceshipSecene, transition: doorTransaction)
+            })
         }
     }
+}
+
+class SpaceshipScene: SKScene {
+    var contentCreated : Bool = false
+    
+    override func didMoveToView(view: SKView) {
+        if contentCreated == false {
+            self.createSceneContents()
+            self.contentCreated = true
+        }
+    }
+    
+    func createSceneContents() {
+        self.backgroundColor = SKColor.greenColor()
+        self.scaleMode = SKSceneScaleMode.ResizeFill
+
+    }
+    
 }
 
 
