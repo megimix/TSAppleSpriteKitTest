@@ -91,9 +91,45 @@ class SpaceshipScene: SKScene {
     func createSceneContents() {
         self.backgroundColor = SKColor.greenColor()
         self.scaleMode = SKSceneScaleMode.ResizeFill
-
+        
+        let spaceship = newSpaceship()
+        spaceship.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 150)
+        self .addChild(spaceship)
     }
     
+    func newSpaceship() -> SKSpriteNode {
+        let hull = SKSpriteNode(color: SKColor.grayColor(),  size: CGSizeMake(64, 32))
+        
+        let hover = SKAction.sequence(
+            [SKAction.waitForDuration(1.0),
+            SKAction.moveByX(100, y: 50, duration: 1),
+            SKAction.waitForDuration(1.0),
+            SKAction.moveByX(-100, y: -50, duration: 10.0)])
+        hull.runAction(SKAction.repeatActionForever(hover))
+        
+        let light1 = newLight()
+        light1.position = CGPointMake(-28.0, 6.0)
+        hull.addChild(light1)
+        
+        let light2 = newLight()
+        light2.position = CGPointMake(28.0, 6)
+        hull.addChild(light2)
+        
+        return hull
+    }
+    
+    func newLight() -> SKSpriteNode {
+        let light = SKSpriteNode(color: SKColor.yellowColor(), size: CGSizeMake(8, 8))
+        
+        let blink = SKAction.sequence(
+            [SKAction.fadeOutWithDuration(0.25),
+            SKAction.fadeInWithDuration(0.25)])
+        let blinkForever = SKAction.repeatActionForever(blink)
+        
+        light.runAction(blinkForever)
+        
+        return light
+    }
 }
 
 
